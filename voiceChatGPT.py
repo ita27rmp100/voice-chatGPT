@@ -1,6 +1,6 @@
 import openai , pyttsx3 , speech_recognition as sr
 
-openai.api_key = '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'
+openai.api_key = 'your-key'
 
 conversation_history = []
 
