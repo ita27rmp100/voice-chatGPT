@@ -1,5 +1,4 @@
 import openai , pyttsx3 , speech_recognition as sr
-
 openai.api_key = 'your-key'
 
 conversation_history = []
@@ -9,30 +8,26 @@ ra = pyttsx3.init()
 ra.setProperty('rate',125)
 r = sr.Recognizer()
 
-def reply(message) :
-    with sr.Microphone() as source:
-        r.adjust_for_ambient_noise(source)
-        ra.say(message)
-        ra.runAndWait()
-        print('ChatGPT: '+ message)
-        audio = r.listen(source)
+def reply(message):
+    ra.say(message)
+    ra.runAndWait()
+    print('ChatGPT: ' + message)
 def send_message(message):
     global conversation_history
     conversation_history.append('User: ' + message)
-    prompt = 'You are a helpful assistant.\n' + '\n'.join(conversation_history)
-    response = openai.Completion.create(
-        engine='text-davinci-003',
-        prompt=prompt,
-        temperature=0.7,
-        max_tokens=100,
-        top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.6
-    )
-    response_text = response.choices[0].text.strip()
-    conversation_history.append(response_text)
-    return response_text
-
+    try:
+        response = openai.ChatCompletion.create(
+            model='gpt-3.5-turbo',  # Or use 'gpt-4'
+            messages=[{"role": "system", "content": "You are a helpful assistant."}] + 
+                    [{"role": "user", "content": msg} for msg in conversation_history],
+            temperature=0.7,
+            max_tokens=100
+        )
+        response_text = response.choices[0].text.strip()
+        conversation_history.append(response_text)
+        return response_text
+    except Exception as e:
+        return f"Error: {str(e)}"
 def recognize_speech():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -46,10 +41,9 @@ def recognize_speech():
             return '...'
         except sr.RequestError as e:
             return "..." + str(e)
-
 # Single conversation
-reply('Hello! How can I assist you today?')
-while True:
+def discuss() :
+    reply('Hello! How can I assist you ?')
     user_input = recognize_speech()
     response = send_message(user_input)
     reply(response)
