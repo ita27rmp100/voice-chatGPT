@@ -1,4 +1,5 @@
-Simple script using the OpenAI API key for voice-based conversations, where user speech is processed and responded to by the OpenAI model.
+<h1>Voice-ChatGPT</h1>
+<small>Voice Chat with OpenAI 🎙️</small> <br><br>
+A simple script that uses the OpenAI API for voice-based conversations. It captures user speech, processes it into text, sends it to OpenAI, and plays back the response.
 
-Do you have something you can add in this simple project ? <br>
-<b>I'm waiting your reply 😄🔥</b>
+<h6>Feel free to suggest improvements or contribute! 😄🔥</h6>
